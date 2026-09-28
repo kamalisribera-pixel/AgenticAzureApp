@@ -42,13 +42,6 @@ jobs:
         run: |
           az account show
           az webapp list --query "[].{Name:name,RG:resourceGroup}" -o table
-      
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: agenticazureapp
-          package: .
-      
 
       - name: Zip application
         run: zip -r app.zip . -x ".git/*"
