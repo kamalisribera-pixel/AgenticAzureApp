@@ -32,11 +32,23 @@ jobs:
           source antenv/bin/activate
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
+      
       - name: Azure Login
         uses: azure/login@v3
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Verify Azure Login
+        run: |
+          az account show
+          az webapp list --query "[].{Name:name,RG:resourceGroup}" -o table
+      
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: agenticazureapp
+          package: .
+      
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
