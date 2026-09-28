@@ -50,9 +50,13 @@ jobs:
           package: .
       
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: agenticazureapp
-          resource-group-name: learning-rg
-          package: .
+      - name: Zip application
+        run: zip -r app.zip . -x ".git/*"
+      
+      - name: Deploy using Azure CLI
+        run: |
+          az webapp deploy \
+            --resource-group learning-rg \
+            --name agenticazureapp \
+            --src-path app.zip \
+            --type zip
